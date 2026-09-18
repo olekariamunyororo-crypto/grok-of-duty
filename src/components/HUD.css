@@ -1,0 +1,186 @@
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ===== CROSSHAIR ===== */
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+}
+
+.ch-h, .ch-v {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
+.ch-h {
+  width: 12px;
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ch-h::before, .ch-h::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  top: 0;
+}
+
+.ch-h::before { left: -14px; }
+.ch-h::after { right: -14px; }
+
+.ch-v {
+  width: 2px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ch-v::before, .ch-v::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  left: 0;
+}
+
+.ch-v::before { top: -14px; }
+.ch-v::after { bottom: -14px; }
+
+.ch-dot {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ===== HEALTH ===== */
+.hud-bottom-left {
+  position: absolute;
+  bottom: 32px;
+  left: 36px;
+}
+
+.health-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.health-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgba(200, 220, 240, 0.6);
+  font-weight: 600;
+}
+
+.health-bar {
+  width: 160px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c03030, #e05040);
+  transition: width 0.15s ease;
+  box-shadow: 0 0 8px rgba(220, 50, 50, 0.5);
+}
+
+.health-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e8eef5;
+  min-width: 42px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ===== AMMO ===== */
+.hud-bottom-right {
+  position: absolute;
+  bottom: 32px;
+  right: 36px;
+}
+
+.ammo-container {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.ammo-current {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #e8eef5;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  line-height: 1;
+}
+
+.ammo-divider {
+  font-size: 1.3rem;
+  color: rgba(200, 220, 240, 0.45);
+  margin: 0 2px;
+}
+
+.ammo-reserve {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgba(200, 220, 240, 0.7);
+}
+
+.ammo-label {
+  position: absolute;
+  bottom: -18px;
+  right: 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(180, 200, 220, 0.5);
+}
+
+/* ===== KILLS ===== */
+.hud-top-right {
+  position: absolute;
+  top: 28px;
+  right: 36px;
+}
+
+.kills {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.kills-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: rgba(180, 200, 220, 0.55);
+  font-weight: 600;
+}
+
+.kills-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e8eef5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
