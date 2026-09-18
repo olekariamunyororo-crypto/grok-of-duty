@@ -1,7 +1,8 @@
-import { createRoot } from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import './index.css';
 
-// Note: StrictMode intentionally disabled — it double-mounts effects and
-// destroys the PlayCanvas Application before it can render.
-createRoot(document.getElementById('root')!).render(<App />)
+// NOTE: intentionally no <React.StrictMode> here — StrictMode double-invokes
+// effects in development, which would create/destroy the PlayCanvas
+// Application twice and break the game canvas.
+createRoot(document.getElementById('root')!).render(<App />);
