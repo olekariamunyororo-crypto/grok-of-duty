@@ -1,10 +1,7 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Note: StrictMode intentionally disabled — it double-mounts effects and
+// destroys the PlayCanvas Application before it can render.
+createRoot(document.getElementById('root')!).render(<App />)
