@@ -13,28 +13,22 @@ export default function HUD({ stats, gameState }: HUDProps) {
 
   return (
     <div className="hud">
-      {/* Crosshair */}
       <div className="crosshair">
         <div className="ch-h" />
         <div className="ch-v" />
         <div className="ch-dot" />
       </div>
 
-      {/* Bottom left - Health */}
       <div className="hud-bottom-left">
         <div className="health-container">
           <div className="health-label">HEALTH</div>
           <div className="health-bar">
-            <div
-              className="health-fill"
-              style={{ width: `${healthPercent}%` }}
-            />
+            <div className="health-fill" style={{ width: `${healthPercent}%` }} />
           </div>
           <div className="health-value">{Math.ceil(stats.health)}</div>
         </div>
       </div>
 
-      {/* Bottom right - Ammo */}
       <div className="hud-bottom-right">
         <div className="ammo-container">
           <div className="ammo-current">{stats.ammo}</div>
@@ -44,7 +38,6 @@ export default function HUD({ stats, gameState }: HUDProps) {
         </div>
       </div>
 
-      {/* Top right - Kills */}
       <div className="hud-top-right">
         <div className="kills">
           <span className="kills-label">KILLS</span>
