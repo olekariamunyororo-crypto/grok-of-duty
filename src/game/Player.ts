@@ -16,24 +16,19 @@ export interface PlayerController {
 }
 
 export function createPlayer(app: pc.Application) {
-  // Player root (handles yaw / horizontal movement)
   const playerEntity = new pc.Entity('Player')
   playerEntity.setPosition(0, 1.7, 5)
   app.root.addChild(playerEntity)
 
-  // Camera (handles pitch)
   const camera = new pc.Entity('Camera')
   camera.addComponent('camera', {
-    clearColor: new pc.Color(0.55, 0.65, 0.78),
+    clearColor: new pc.Color(0.45, 0.55, 0.68),
     farClip: 200,
     nearClip: 0.08,
     fov: 75,
   })
   camera.setLocalPosition(0, 0, 0)
   playerEntity.addChild(camera)
-
-  // Simple collision / ground check using a capsule-like approach
-  // (PlayCanvas has rigidbody, but for pure FPS feel we do custom movement)
 
   const speed = 6.5
   const sprintMultiplier = 1.65
@@ -44,29 +39,25 @@ export function createPlayer(app: pc.Application) {
   let isGrounded = true
   const playerHeight = 1.7
 
+  const forward = new pc.Vec3()
+  const right = new pc.Vec3()
+  const move = new pc.Vec3()
+
   const controller: PlayerController = {
     update(dt: number, input: PlayerInput) {
-      // Horizontal movement
-      const forward = new pc.Vec3()
-      const right = new pc.Vec3()
+      const angles = playerEntity.getEulerAngles()
+      const yawRad = (angles.y * Math.PI) / 180
 
-      camera.getWorldTransform().getZ(forward)
-      forward.y = 0
-      forward.normalize()
-      forward.mulScalar(-1) // camera looks down -Z
+      forward.set(-Math.sin(yawRad), 0, -Math.cos(yawRad))
+      right.set(Math.cos(yawRad), 0, -Math.sin(yawRad))
 
-      camera.getWorldTransform().getX(right)
-      right.y = 0
-      right.normalize()
-
-      const move = new pc.Vec3()
-
+      move.set(0, 0, 0)
       if (input.forward) move.add(forward)
       if (input.backward) move.sub(forward)
       if (input.right) move.add(right)
       if (input.left) move.sub(right)
 
-      if (move.length() > 0) {
+      if (move.lengthSq() > 0) {
         move.normalize()
         const currentSpeed = input.sprint ? speed * sprintMultiplier : speed
         move.mulScalar(currentSpeed * dt)
@@ -74,14 +65,11 @@ export function createPlayer(app: pc.Application) {
         const pos = playerEntity.getPosition()
         pos.add(move)
 
-        // Simple world bounds (keep player in the test map)
         pos.x = Math.max(-24, Math.min(24, pos.x))
         pos.z = Math.max(-24, Math.min(24, pos.z))
-
         playerEntity.setPosition(pos)
       }
 
-      // Jump + gravity
       if (input.jump && isGrounded) {
         velocityY = jumpForce
         isGrounded = false
@@ -92,7 +80,6 @@ export function createPlayer(app: pc.Application) {
       const pos = playerEntity.getPosition()
       pos.y += velocityY * dt
 
-      // Ground collision (flat ground at y = 0)
       if (pos.y <= playerHeight) {
         pos.y = playerHeight
         velocityY = 0
