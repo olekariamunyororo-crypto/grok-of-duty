@@ -21,6 +21,16 @@ lock the mouse ("CLICK TO ENGAGE").
     R .......... reload
     Esc ........ back to the main menu
 
+## Debugging (vConsole)
+
+[vConsole](https://github.com/Tencent/vConsole) is enabled automatically in
+development (`npm run dev`). A floating green button appears in the corner —
+tap it for logs, network, DOM, and storage.
+
+On production / preview builds, append `?vconsole=1` to the URL:
+
+    http://localhost:4173/?vconsole=1
+
 ## Implementation notes
 
 - React StrictMode is intentionally NOT used: it double-mounts effects in
