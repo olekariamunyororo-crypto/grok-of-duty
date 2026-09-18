@@ -1,37 +1,40 @@
-import './MainMenu.css'
-
 interface MainMenuProps {
-  onStart: () => void
+  onDeploy: () => void;
 }
 
-export default function MainMenu({ onStart }: MainMenuProps) {
+export default function MainMenu({ onDeploy }: MainMenuProps) {
   return (
-    <div className="main-menu">
-      <div className="menu-content">
-        <div className="logo">
-          <h1>GROK OF DUTY</h1>
-          <p className="subtitle">MODERN WARFARE // SINGLE PLAYER</p>
-        </div>
-
+    <div className="menu scanlines">
+      <div className="menu-grid" />
+      <div className="menu-inner">
+        <div className="menu-kicker">// TRAINING OP: NIGHTJAR — CLEARANCE GRANTED //</div>
+        <h1 className="menu-title">
+          GROK<span className="title-accent"> OF </span>DUTY
+        </h1>
+        <div className="menu-sub">MODERN WARFARE&nbsp;&nbsp;//&nbsp;&nbsp;SINGLE PLAYER</div>
+        <div className="menu-divider" />
         <div className="menu-buttons">
-          <button className="menu-btn primary" onClick={onStart}>
-            DEPLOY
+          <button className="btn btn-deploy" onClick={onDeploy}>
+            &#9654; DEPLOY
           </button>
-          <button className="menu-btn" disabled>
-            LOADOUT (Coming Soon)
+          <button className="btn" disabled>
+            LOADOUT
           </button>
-          <button className="menu-btn" disabled>
+          <button className="btn" disabled>
             SETTINGS
           </button>
         </div>
-
-        <div className="footer">
-          <p>WASD — Move · Mouse — Look · Left Click — Fire · R — Reload · Shift — Sprint</p>
-          <p className="version">v0.1.0 — Built with React + PlayCanvas</p>
+        <div className="menu-controls">
+          <span>WASD — MOVE</span>
+          <span>SHIFT — SPRINT</span>
+          <span>SPACE — JUMP</span>
+          <span>MOUSE — AIM</span>
+          <span>LMB — FIRE</span>
+          <span>R — RELOAD</span>
+          <span>ESC — MENU</span>
         </div>
       </div>
-
-      <div className="scanlines"></div>
+      <div className="menu-footer">GROK OF DUTY &middot; BUILD 1.0.0 &middot; LOCAL SIMULATION — NO NETWORK REQUIRED</div>
     </div>
-  )
+  );
 }

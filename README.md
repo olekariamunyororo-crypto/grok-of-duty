@@ -1,58 +1,47 @@
-# Grok of Duty
+# GROK OF DUTY
+Modern Warfare // Single Player — a browser FPS built with
+React 18 + TypeScript + Vite + the PlayCanvas engine (used directly,
+no wrapper library).
 
-Single-player FPS built with **React + PlayCanvas**.
+## Quick start
 
-## Quick Start
+    npm install
+    npm run dev
 
-```bash
-cd grok-of-duty
-npm install
-npm run dev
-```
-
-Then open the URL Vite prints (usually http://localhost:5173).
+Open http://localhost:5173 and click DEPLOY, then click the screen to
+lock the mouse ("CLICK TO ENGAGE").
 
 ## Controls
 
-| Key / Input       | Action          |
-|-------------------|-----------------|
-| WASD              | Move            |
-| Mouse             | Look            |
-| Left Click        | Fire            |
-| R                 | Reload          |
-| Shift             | Sprint          |
-| Space             | Jump            |
-| Escape            | Return to Menu  |
+    W A S D .... move
+    Mouse ...... look
+    Shift ...... sprint (FOV punch)
+    Space ...... jump
+    LMB ........ fire (full auto, 600 RPM)
+    R .......... reload
+    Esc ........ back to the main menu
 
-## Current Features (v0.1)
+## Implementation notes
 
-- First-person controller with sprint & jump
-- Mouse look + pointer lock
-- Basic assault rifle with recoil + muzzle flash
-- Ammo / reload system
-- Simple military-style test map (containers, cover, buildings)
-- HUD (health, ammo, kills, crosshair)
-- Main menu
+- React StrictMode is intentionally NOT used: it double-mounts effects in
+  development, which would create and destroy the PlayCanvas Application
+  twice per mount.
+- The canvas uses FILLMODE_NONE + RESOLUTION_AUTO with a manual resize
+  handler so it always exactly fills its parent container.
+- The weapon viewmodel renders through a second camera into a dedicated
+  render layer (depth-only clear), so it never clips through walls.
+- Physics is a lightweight custom axis-separated AABB solver (with
+  auto step-up for stairs/ramps) — no external physics engine required.
+- Pop-up targets at the north end of the map are shootable; killed targets
+  fall over, respawn after ~3s and increment the kill counter.
+- All sounds are procedurally synthesised with WebAudio (no assets).
 
-## Project Structure
+## Project layout
 
-```
-src/
-  components/
-    GameCanvas.tsx   # PlayCanvas application + input
-    HUD.tsx          # In-game UI
-    MainMenu.tsx     # Start screen
-  game/
-    Player.ts        # FPS movement controller
-    Level.ts         # Test map generation
-    Weapon.ts        # Gun model + firing logic
-  App.tsx            # Top-level state
-```
-
-## Next Steps (easy expansions)
-
-- Enemy AI + hit detection
-- More weapons / loadout system
-- Better map / lighting / post-processing
-- Sound effects
-- Particle systems (muzzle smoke, impacts)
+    src/App.tsx                 game state (menu | playing) + HUD stats
+    src/components/MainMenu.tsx title screen with scanlines
+    src/components/HUD.tsx      crosshair, health, ammo, kills
+    src/components/GameCanvas.tsx  PlayCanvas app + input + frame loop
+    src/game/Player.ts          FPS controller (custom AABB physics)
+    src/game/Weapon.ts          viewmodel, hitscan firing, reload, SFX
+    src/game/Level.ts           test map generation + colliders + targets

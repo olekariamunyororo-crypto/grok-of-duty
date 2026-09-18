@@ -1,64 +1,71 @@
-import { useState, useCallback } from 'react'
-import GameCanvas from './components/GameCanvas'
-import HUD from './components/HUD'
-import MainMenu from './components/MainMenu'
-import './App.css'
+import { useCallback, useState } from 'react';
+import GameCanvas from './components/GameCanvas';
+import HUD from './components/HUD';
+import MainMenu from './components/MainMenu';
 
-export type GameState = 'menu' | 'playing' | 'paused'
+export type Phase = 'menu' | 'playing';
 
-export interface PlayerStats {
-  health: number
-  maxHealth: number
-  ammo: number
-  maxAmmo: number
-  reserveAmmo: number
-  kills: number
+export interface Stats {
+  health: number;
+  ammo: number;
+  reserve: number;
+  kills: number;
+  reloading: boolean;
 }
 
-function App() {
-  const [gameState, setGameState] = useState<GameState>('menu')
-  const [stats, setStats] = useState<PlayerStats>({
-    health: 100,
-    maxHealth: 100,
-    ammo: 30,
-    maxAmmo: 30,
-    reserveAmmo: 90,
-    kills: 0,
-  })
+const INITIAL_STATS: Stats = {
+  health: 100,
+  ammo: 30,
+  reserve: 90,
+  kills: 0,
+  reloading: false,
+};
 
-  const startGame = useCallback(() => {
-    setGameState('playing')
-    setStats({
-      health: 100,
-      maxHealth: 100,
-      ammo: 30,
-      maxAmmo: 30,
-      reserveAmmo: 90,
-      kills: 0,
-    })
-  }, [])
+export default function App() {
+  const [phase, setPhase] = useState<Phase>('menu');
+  const [stats, setStats] = useState<Stats>(INITIAL_STATS);
+  const [locked, setLocked] = useState(false);
+  // runId forces a brand-new GameCanvas (fresh PlayCanvas app) on every deploy
+  const [runId, setRunId] = useState(0);
 
-  const returnToMenu = useCallback(() => {
-    setGameState('menu')
-  }, [])
+  const handleDeploy = useCallback(() => {
+    setStats(INITIAL_STATS);
+    setLocked(false);
+    setRunId((id) => id + 1);
+    setPhase('playing');
+  }, []);
+
+  const handleExit = useCallback(() => setPhase('menu'), []);
+  const handleLockChange = useCallback((l: boolean) => setLocked(l), []);
+  const handleStats = useCallback((s: Stats) => setStats(s), []);
 
   return (
-    <div className="app">
-      {gameState === 'menu' && <MainMenu onStart={startGame} />}
-      
-      {(gameState === 'playing' || gameState === 'paused') && (
-        <>
+    <div className="app-root">
+      {phase === 'playing' ? (
+        <div className="game-root">
           <GameCanvas
-            gameState={gameState}
-            stats={stats}
-            setStats={setStats}
-            onReturnToMenu={returnToMenu}
+            key={runId}
+            onStats={handleStats}
+            onExit={handleExit}
+            onLockChange={handleLockChange}
           />
-          <HUD stats={stats} gameState={gameState} />
-        </>
+          <HUD stats={stats} />
+          {!locked && (
+            <div className="engage-overlay">
+              <div className="engage-box">
+                <div className="engage-title">CLICK TO ENGAGE</div>
+                <div className="engage-keys">
+                  WASD MOVE &nbsp;&middot;&nbsp; SHIFT SPRINT &nbsp;&middot;&nbsp; SPACE JUMP
+                  &nbsp;&middot;&nbsp; LMB FIRE &nbsp;&middot;&nbsp; R RELOAD
+                  &nbsp;&middot;&nbsp; ESC MENU
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <MainMenu onDeploy={handleDeploy} />
       )}
     </div>
-  )
+  );
 }
-
-export default App
