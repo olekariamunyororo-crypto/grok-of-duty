@@ -23,7 +23,10 @@ export default function HUD({ stats, gameState }: HUDProps) {
         <div className="health-container">
           <div className="health-label">HEALTH</div>
           <div className="health-bar">
-            <div className="health-fill" style={{ width: `${healthPercent}%` }} />
+            <div
+              className="health-fill"
+              style={{ width: `${healthPercent}%` }}
+            />
           </div>
           <div className="health-value">{Math.ceil(stats.health)}</div>
         </div>
